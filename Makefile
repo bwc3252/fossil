@@ -1,14 +1,13 @@
 CC = gcc
 CFLAGS += -std=c99 -pedantic -Wall -ggdb
 RM = rm
-COMPILER_SOURCES = src/compiler/main.c
-INTERPRETER_SOURCES = src/interpreter/main.c
-COMPILER_OBJECTS = $(COMPILER_SOURCES:.c=.o)
-INTERPRETER_OBJECTS = $(INTERPRETER_SOURCES:.c=.o)
+SOURCES = src/main.c src/lexer/lexer.c src/linked_list/list.c src/io/read_file.c
+OBJECTS = $(SOURCES:.c=.o)
+TARGET = build/pineapple
 
 .PHONY: all clean
 
-all: directories interpreter compiler
+all: directories $(TARGET)
 
 directories: build
 
@@ -18,11 +17,8 @@ build:
 clean:
 	$(RM) $(TARGET) $(OBJECTS)
 
-compiler : $(COMPILER_OBJECTS)
-	$(CC) $^ -o build/$@
-
-interpreter : $(INTERPRETER_OBJECTS)
-	$(CC) $^ -o build/$@
+$(TARGET) : $(OBJECTS)
+	$(CC) $^ -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<

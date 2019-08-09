@@ -1,3 +1,3 @@
-# pineapple
+# fossil
 
-The pineapple programming language
+The Fossil programming language
