@@ -8,13 +8,13 @@ The Fossil programming language compiler
 - Garbage collection
 - Static typing
 - Types:
-..- int
-..- float
-..- str
-..- bool
-..- fn
-..- array
-..- struct
+  - int
+  - float
+  - str
+  - bool
+  - fn
+  - array
+  - struct
 - LLVM backend produces assembly code for target platform
 
 ## Example code
