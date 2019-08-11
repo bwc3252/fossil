@@ -12,6 +12,7 @@ static list_node_t split(list_node_t list, char *token);
 
 list_node_t tokenize(char *str) {
     list_node_t node = new_list_node(str);
+    char *text;
     for (int i = 0; token_list[i] != NULL; ++ i) {
         char *token = token_list[i];
         list_node_t prev;
@@ -23,12 +24,23 @@ list_node_t tokenize(char *str) {
         node = prev;
         list_node_t temp;
         while (node->prev != NULL) {
+            text = node->text;
             temp = node->prev;
-            if (strcmp(node->text, NEWLINE) == 0) {
-                node->text[0] = ';';
+            // replace newlines with semicolons
+            if (strcmp(text, NEWLINE) == 0) {
+                text[0] = ';';
             }
-            if (strcmp(node->text, TAB) == 0 || strcmp(node->text, SPACE) == 0 
-                    || strcmp(node->text, "") == 0) {
+            // remove redundant semicolons
+            if (strcmp(node->text, TAB) == 0 
+                    || strcmp(text, SPACE) == 0 
+                    || strcmp(text, EMPTY) == 0
+                    || (strcmp(text, ";") == 0 && strcmp(node->prev->text, ";") == 0)
+                    || (strcmp(text, ";") == 0 && strcmp(node->prev->text, LEFT_PAR) == 0)
+                    || (strcmp(text, ";") == 0 && strcmp(node->prev->text, RIGHT_PAR) == 0)
+                    || (strcmp(text, ";") == 0 && strcmp(node->prev->text, LEFT_BR) == 0)
+                    || (strcmp(text, ";") == 0 && strcmp(node->prev->text, RIGHT_BR) == 0)
+                    || (strcmp(text, ";") == 0 && strcmp(node->prev->text, LEFT_CURL) == 0)
+                    || (strcmp(text, ";") == 0 && strcmp(node->prev->text, RIGHT_CURL) == 0)) {
                 if (node->next != NULL) {
                     node->next->prev = node->prev;
                 }
@@ -38,6 +50,18 @@ list_node_t tokenize(char *str) {
                 destroy_list_node(node);
             }
             node = temp;
+        }
+        // if there was extra stuff at the start of the file, it may not have been
+        // caught yet, so we get rid of it here
+        while (node->next != NULL &&
+                (strcmp(node->text, NEWLINE) == 0 
+                || strcmp(node->text, SEMICOLON) == 0
+                || strcmp(node->text, EMPTY) == 0
+                || strcmp(node->text, SPACE) == 0)) {
+                temp = node->next;
+                destroy_list_node(node);
+                node = temp;
+                node->prev = NULL;
         }
     }
     return node;

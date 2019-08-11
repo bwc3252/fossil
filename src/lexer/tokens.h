@@ -31,7 +31,10 @@
 #define NOT         "!"
 
 #define COLON       ":"
+#define SEMICOLON   ";"
 #define COMMA       ","
+
+#define QUOTE       "\""
 
 #define STRUCT_GET  "->"
 
@@ -47,6 +50,6 @@ char *token_list[] = {NEWLINE, TAB, SPACE, EQ, LESS_EQ, GREATER_EQ, NOT_EQ, POWE
                       STRUCT_GET, RETURNS, LEFT_PAR, RIGHT_PAR, LEFT_BR,
                       RIGHT_BR, LEFT_CURL, RIGHT_CURL, SET_EQ, LESS, GREATER,
                       ADD, SUBTRACT, MULTIPLY, DIVIDE, REMAINDER, AND, OR, NOT,
-                      COLON, COMMA, NULL};
+                      COLON, COMMA, QUOTE, NULL};
 
 #endif
