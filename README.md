@@ -45,6 +45,3 @@ fn main() {
 - [ ] add support for arrays
 - [ ] design and implement import system
 - [ ] implement basic standard library in Fossil
-..- [ ] maps
-..- [ ] sets
-..- [ ] input/output
