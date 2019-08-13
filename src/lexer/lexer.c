@@ -9,8 +9,32 @@
 #include "tokens.h"
 
 static list_node_t split(list_node_t list, char *token);
+static void strip_comments(char *str);
+
+static void strip_comments(char *str) {
+    int j = 0;
+    int is_comment = 0;
+    char c, next;
+    for (int i = 0; i < strlen(str) - 1; ++ i) {
+        c = str[i];
+        next = str[i + 1];
+        if (c == '/' && next == '*') {
+            is_comment = 1;
+        }
+        if (c == '*' && next == '/') {
+            is_comment = 0;
+            i += 2;;
+        }
+        if (!is_comment) {
+            str[j] = str[i];
+            ++ j;
+        }
+    }
+    str[j] = '\0';
+}
 
 list_node_t tokenize(char *str) {
+    strip_comments(str);
     list_node_t node = new_list_node(str);
     char *text;
     for (int i = 0; token_list[i] != NULL; ++ i) {

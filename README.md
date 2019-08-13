@@ -35,7 +35,7 @@ fn main() {
 ## To do
 
 - [x] tokenization
-- [ ] strip comments
+- [x] strip comments
 - [ ] categorize tokens by type
 - [ ] generate AST from tokens
 - [ ] convert AST to LLVM IR
