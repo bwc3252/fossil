@@ -15,6 +15,7 @@ list_node_t new_list_node(char *text) {
     strcpy(node->text, text);
     node->text[node->size] = '\0';
     node->is_token = 0;
+    node->token_class = -1; // see src/parser/token_classes.h
     return node;
 }
 

@@ -7,6 +7,7 @@
 #include "lexer/lexer.h"
 #include "linked_list/list.h"
 #include "io/read_file.h"
+#include "parser/parser.h"
 
 int main(int argc, char **argv) {
     if (argc < 2) {
@@ -16,8 +17,9 @@ int main(int argc, char **argv) {
     char *str = read_source_file(argv[1]);
     list_node_t node = tokenize(str);
     list_node_t start = node;
+    categorize_tokens(start);
     while (node != NULL) {
-        printf("%s\n", node->text);
+        printf("%s %d\n", node->text, node->token_class);
         node = node->next;
     }
     destroy_list(start);

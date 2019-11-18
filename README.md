@@ -1,6 +1,6 @@
 # fossil
 
-The Fossil programming language compiler
+The Fossil programming language interpreter
 
 ## Language features
 
@@ -31,17 +31,3 @@ fn main() {
     print fib(20)
 }
 ```
-
-## To do
-
-- [x] tokenization
-- [x] strip comments
-- [ ] categorize tokens by type
-- [ ] generate AST from tokens
-- [ ] convert AST to LLVM IR
-- [ ] pass LLVM IR to LLVM, compile to executable
-- [ ] error handling (generate helpful messages)
-- [ ] add support for structs
-- [ ] add support for arrays
-- [ ] design and implement import system
-- [ ] implement basic standard library in Fossil
