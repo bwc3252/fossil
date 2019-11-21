@@ -1,0 +1,56 @@
+PROGRAM     = $ | FUNCTION PROGRAM                                              // All code must be inside functions, so these are the basic units that make up a program
+
+FUNCTION    = "fn" NAME "(" PARAMETERS ")" RETURN BLOCK                         // e.g. fn add_int(int a, int b) -> int {return a + b;}
+
+BLOCK       = "{" STATEMENTS "}"                                                // All blocks consist of one or more statements inside curly braces
+
+STATEMENT   = ";" | ASSIGNMENT ";" | EXPRESSION ";"                             // A single statement
+              | "if" "(" EXPRESSION ")" BLOCK
+              | "elif" "(" EXPRESSION ")" BLOCK
+              | "else" BLOCK
+              | "while" "(" EXPRESSION ")" BLOCK
+              | "print" EXPRESSION ";"
+              | "throw" EXPRESSION ";"
+
+STATEMENTS  = $ | STATEMENT STATEMENTS                                          // 0 or more statements
+
+ASSIGNMENT  = DECLARATION ASSIGN EXPRESSION ";"                                 // Assignments can either assign expressions to newly-declared variables or to existing variables
+              | NAME ASSIGN EXPRESSION ";"
+
+ASSIGN      = "=" | "+=" | "-=" | "*=" | "/="                                   // Possible ways of assigning values to variables
+
+CALL        = NAME "(" ARGUMENTS ")" ";"                                        // e.g. add_int(a, 5);
+
+EXPRESSION  = EQUALITY                                                          // Begin defining expressions. Defining them in this way handles operator precedence
+
+EQUALITY    = COMPARISON | COMPARISON ("!=" | "==") EQUALITY
+
+COMPARISON  = ADDITION | ADDITION (">" | ">=" | "<" | "<=") COMPARISON
+
+ADDITION    = MULT | MULT ("-" | "+") ADDITION
+
+MULT        = UNARY | UNARY ("/" | "*") MULT
+
+UNARY       = PRIMARY | ("not" | "-") UNARY
+
+PRIMARY     = TERM | "(" EXPRESSION ")"                                         // end defining expressions
+
+RETURN      = $ | "->" TYPE                                                     // Functions without return types are assumed to be "void"
+
+DECLARATION = TYPE NAME                                                         // e.g. int thing ...
+
+PARAMETERS  = $ | PARAMS                                                        // Function parameter specification is either empty or one or more params...
+
+PARAMS      = DECLARATION | DECLARATION "," PARAMS                              // Either one parameter, e.g. fn f(int a), or a comma separated list, e.g. fn g(int a, int b)
+
+ARGUMENTS   = $ | ARGS                                                          // Arguments for calling a function (similar to PARAMETERS except we don't need types)
+
+ARGS        = EXPRESSION | EXPRESSION "," ARGS                                  // See PARAMS
+
+TERM        = NAME | CALL | LITERAL                                             // Possible terms in an expression
+
+TYPE        = "int" | "float" | "str" | "bool"                                  // Type declarations (this will be expanded later)
+
+Variables with implied definitions:
+  - NAME
+  - LITERAL
