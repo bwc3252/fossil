@@ -19,7 +19,7 @@ The Fossil programming language interpreter
 ## Example code
 
 ```
-fn fib(int n) -> int {
+fn fib(int n) => int {
     if (n <= 1) {
         return n
     }
@@ -48,5 +48,21 @@ The interpreter will require a data structure to map variable names to values wh
 To accomplish this I am thinking of building a stack that contains hashmaps -- each time a function is called we push a new symbol table to the stack, which will hold local variables.
 When that function returns, we will pop that table from the stack and add its return value to the symbol table that is now the top of the stack, i.e. the calling function.
 
+## Short-term plan
+
 To make development easier, I plan to implement a "bare bones" version of the language first.
 The only types I will implement to begin with are int and bool, and only a single main function will be used.
+A very minimal `print` will be implemented for testing.
+
+## Medium/long-term plan
+
+With this minimal version of the language working, I will begin to expand it.
+The first major addition will be to fully support functions; after that, I will implement the remaining primitive types, as well as for loops.
+Next, I will implement arrays, which must (a) have a fixed length, and (b) contain only primitive types, and then structs, which are the basic method of creating composite types in fossil.
+Finally, I will design and implement an import system to allow programs to be built from multiple source files.
+
+These additions will complete the core language.
+The long-term goal is to build a standard library in fossil, which will provide functions for file I/O, better printing, and some useful composite types (e.g. a hashmap, a more general "list" type, etc.).
+At this point, fossil should be a fully-functional, minimal scripting language.
+
+I don't have a particular use in mind for the language (this is primarily a learning project), but it should be well-suited to quick-and-dirty command line tools, etc.

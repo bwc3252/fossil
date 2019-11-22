@@ -35,7 +35,7 @@ UNARY       = PRIMARY | ("not" | "-") UNARY
 
 PRIMARY     = TERM | "(" EXPRESSION ")"                                         // end defining expressions
 
-RETURN      = $ | "->" TYPE                                                     // Functions without return types are assumed to be "void"
+RETURN      = $ | "=>" TYPE                                                     // Functions without return types are assumed to be "void"
 
 DECLARATION = TYPE NAME                                                         // e.g. int thing ...
 

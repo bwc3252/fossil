@@ -5,6 +5,10 @@
 
 #include "../linked_list/list.h"
 
-void categorize_tokens(list_node_t node);
+struct ast_node_s {
+    
+};
+
+typedef ast_node_s *ast_node_t;
 
 #endif
