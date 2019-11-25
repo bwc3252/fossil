@@ -26,11 +26,10 @@
 #define POWER       "**"
 #define REMAINDER   "%"
 
-#define AND         "&"
-#define OR          "|"
-#define NOT         "!"
+#define AND         "and"
+#define OR          "or"
+#define NOT         "not"
 
-#define COLON       ":"
 #define SEMICOLON   ";"
 #define COMMA       ","
 
@@ -50,6 +49,6 @@ char *token_list[] = {NEWLINE, TAB, SPACE, EQ, LESS_EQ, GREATER_EQ, NOT_EQ, POWE
                       STRUCT_GET, RETURNS, LEFT_PAR, RIGHT_PAR, LEFT_BR,
                       RIGHT_BR, LEFT_CURL, RIGHT_CURL, SET_EQ, LESS, GREATER,
                       ADD, SUBTRACT, MULTIPLY, DIVIDE, REMAINDER, AND, OR, NOT,
-                      COLON, COMMA, QUOTE, NULL};
+                      SEMICOLON, COMMA, QUOTE, NULL};
 
 #endif

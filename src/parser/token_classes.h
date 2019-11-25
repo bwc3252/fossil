@@ -9,7 +9,6 @@
 #define KEYWORD_ELSE    "else"
 #define KEYWORD_FOR     "for"
 #define KEYWORD_WHILE   "while"
-#define KEYWORD_IN      "in"
 #define KEYWORD_RETURN  "return"
 #define KEYWORD_INT     "int"
 #define KEYWORD_FLOAT   "float"

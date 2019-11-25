@@ -9,13 +9,15 @@
 #include "tokens.h"
 #include "../parser/token_classes.h"
 
-char *keywords[] = {KEYWORD_FN, KEYWORD_IF, KEYWORD_ELSE, KEYWORD_FOR, 
-    KEYWORD_WHILE, KEYWORD_IN, KEYWORD_RETURN, KEYWORD_INT, KEYWORD_FLOAT,
-    KEYWORD_STR, KEYWORD_TYPE, KEYWORD_PRINT, NULL};
+char *keywords[] = {KEYWORD_FN, KEYWORD_IF, KEYWORD_ELIF, KEYWORD_ELSE,
+    KEYWORD_FOR, KEYWORD_WHILE, KEYWORD_RETURN, KEYWORD_INT, KEYWORD_FLOAT,
+    KEYWORD_STR, KEYWORD_TYPE, KEYWORD_PRINT, KEYWORD_EQ, KEYWORD_TRUE,
+    KEYWORD_FALSE};
 
 static list_node_t split(list_node_t list, char *token);
 static void strip_comments(char *str);
 
+// FIXME this will explode if comments are nested
 static void strip_comments(char *str) {
     int j = 0;
     int is_comment = 0;

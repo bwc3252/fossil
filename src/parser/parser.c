@@ -7,6 +7,8 @@
 #include "ast.h"
 #include "token_classes.h"
 
+#define DEBUG_PRINT 1
+
 list_node_t curr;
 
 void advance(void) {
@@ -32,6 +34,9 @@ void expect(char *str) {
 }
 
 ast_node_t ast_node(void) {
+    if (DEBUG_PRINT) {
+        printf("%s\n", curr->text);
+    }
     ast_node_t ret = malloc(sizeof(struct ast_node_s));
     return ret;
 }
