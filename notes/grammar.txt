@@ -5,12 +5,20 @@ FUNCTION    = "fn" NAME "(" PARAMETERS ")" RETURN BLOCK                         
 BLOCK       = "{" STATEMENTS "}"                                                // All blocks consist of one or more statements inside curly braces
 
 STATEMENT   = ";" | ASSIGNMENT ";" | EXPRESSION ";"                             // A single statement
-              | "if" "(" EXPRESSION ")" BLOCK
-              | "elif" "(" EXPRESSION ")" BLOCK
-              | "else" BLOCK
+              | CONDITIONAL
               | "while" "(" EXPRESSION ")" BLOCK
               | "print" EXPRESSION ";"
               | "throw" EXPRESSION ";"
+
+CONDITIONAL = IF ELIFS ELSE
+
+IF          = "if" "(" EXPRESSION ")" BLOCK
+
+ELIFS       = $ | ELIF | ELIF ELIFS
+
+ELIF        = "elif" "(" EXPRESSION ")" BLOCK
+
+ELSE        = $ | "else" BLOCK
 
 STATEMENTS  = $ | STATEMENT STATEMENTS                                          // 0 or more statements
 
@@ -21,7 +29,11 @@ ASSIGN      = "=" | "+=" | "-=" | "*=" | "/="                                   
 
 CALL        = NAME "(" ARGUMENTS ")" ";"                                        // e.g. add_int(a, 5);
 
-EXPRESSION  = EQUALITY                                                          // Begin defining expressions. Defining them in this way handles operator precedence
+EXPRESSION  = OR                                                                // Begin defining expressions. Defining them in this way handles operator precedence
+
+OR          = AND | AND "or" OR
+
+AND         = EQUALITY | EQUALITY "and" AND
 
 EQUALITY    = COMPARISON | COMPARISON ("!=" | "==") EQUALITY
 
@@ -47,10 +59,11 @@ ARGUMENTS   = $ | ARGS                                                          
 
 ARGS        = EXPRESSION | EXPRESSION "," ARGS                                  // See PARAMS
 
-TERM        = NAME | CALL | LITERAL                                             // Possible terms in an expression
+TERM        = VAR | CALL | LITERAL                                              // Possible terms in an expression
 
 TYPE        = "int" | "float" | "str" | "bool"                                  // Type declarations (this will be expanded later)
 
 Variables with implied definitions:
   - NAME
   - LITERAL
+  - VAR

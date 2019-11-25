@@ -5,7 +5,7 @@
 
 #include "list.h"
 
-list_node_t new_list_node(char *text, int line_no) {
+list_node_t new_list_node(char *text) {
     list_node_t node = malloc(sizeof(struct list_node_s));
     node->prev = NULL;
     node->next = NULL;
@@ -15,8 +15,8 @@ list_node_t new_list_node(char *text, int line_no) {
     strcpy(node->text, text);
     node->text[node->size] = '\0';
     node->is_token = 0;
-    node->token_class = -1; // see src/parser/token_classes.h
-    node->line_no = line_no;
+    node->is_keyword = 0;
+    //node->line_no = line_no;
     return node;
 }
 

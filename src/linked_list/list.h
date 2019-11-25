@@ -12,12 +12,13 @@ struct list_node_s {
     size_t size;
     size_t capacity;
     int is_token;
+    int is_keyword;
     int line_no;
 } list_node_s;
 
 typedef struct list_node_s *list_node_t;
 
-list_node_t new_list_node(char *text, int line_no);
+list_node_t new_list_node(char *text);
 
 void destroy_list_node(list_node_t node);
 

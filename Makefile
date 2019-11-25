@@ -5,7 +5,7 @@ SOURCES = src/main.c src/lexer/lexer.c src/linked_list/list.c src/io/read_file.c
 OBJECTS = $(SOURCES:.c=.o)
 TARGET = build/fossil
 
-.PHONY: all clean
+.PHONY: all directories clean
 
 all: directories $(TARGET)
 

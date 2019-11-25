@@ -7,6 +7,11 @@
 #include "lexer.h"
 #include "../linked_list/list.h"
 #include "tokens.h"
+#include "../parser/token_classes.h"
+
+char *keywords[] = {KEYWORD_FN, KEYWORD_IF, KEYWORD_ELSE, KEYWORD_FOR, 
+    KEYWORD_WHILE, KEYWORD_IN, KEYWORD_RETURN, KEYWORD_INT, KEYWORD_FLOAT,
+    KEYWORD_STR, KEYWORD_TYPE, KEYWORD_PRINT, NULL};
 
 static list_node_t split(list_node_t list, char *token);
 static void strip_comments(char *str);
@@ -88,7 +93,20 @@ list_node_t tokenize(char *str) {
                 node->prev = NULL;
         }
     }
-    return node;
+    // in one final pass, check if tokens are keywords
+    list_node_t ret = node;
+    while (node != NULL) {
+        int i = 0;
+        while (keywords[i] != NULL) {
+            if (strcmp(keywords[i], node->text) == 0) {
+                node->is_keyword = 1;
+                break;
+            }
+            ++ i;
+        }
+        node = node->next;
+    }
+    return ret;
 }
 
 static list_node_t split(list_node_t node, char *token) {

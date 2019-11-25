@@ -1,11 +1,10 @@
-# fossil
+# Fossil
 
 The Fossil programming language interpreter
 
 ## Language features
 
 - C-like syntax (but semicolons are not required)
-- Garbage collection
 - Static typing
 - Types:
   - int
@@ -15,6 +14,8 @@ The Fossil programming language interpreter
   - fn
   - array
   - struct
+
+See the [language reference](https://github.com/bwc3252/fossil/blob/master/LANGUAGE_REFERENCE.md) for a full specification of all language features.
 
 ## Example code
 
