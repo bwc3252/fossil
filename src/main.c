@@ -1,4 +1,4 @@
-// Main file for the Fossil compiler
+// Main file for the Fossil interpreter
 //
 // Ben Champion <bwc3252@rit.edu>
 
@@ -8,10 +8,12 @@
 #include "linked_list/list.h"
 #include "io/read_file.h"
 #include "parser/parser.h"
+#include "context/context.h"
 
 int main(int argc, char **argv) {
+    /*
     if (argc < 2) {
-        fprintf(stderr, "ERROR: no input file\n");
+        fprintf(stderr, "Error: no input file\n");
         return 1;
     }
     char *str = read_source_file(argv[1]);
@@ -19,5 +21,7 @@ int main(int argc, char **argv) {
     list_node_t start = node;
     parse(node);
     destroy_list(start);
-    free(str);
+    free(str);*/
+    printf("%lu\n", hashfunc_str("Hello, world") % 10);
+    printf("%lu\n", hashfunc_str("hello, world") % 10);
 }

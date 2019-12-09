@@ -1,0 +1,6 @@
+Short-term tasks:
+  - Write the symbol table and context stack code
+  - Move "preprocessing" tasks to their own directory
+  - Come up with a more elegant way to handle comments (e.g. it should work for
+    nested comments)
+  - 
