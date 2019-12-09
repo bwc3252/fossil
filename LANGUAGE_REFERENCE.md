@@ -37,7 +37,19 @@ fn main() {
 }
 ```
 
-## Declaring, assigning, and using variables
+Functions are called using the standard syntax:
+```
+fn add_one(int i) => int {
+    return i + 1
+}
+
+fn main() {
+    int j = 0
+    j = add_one(j)
+}
+```
+
+## Declaring and assigning variables
 
 Variables must be declared with their type.
 A value must be assigned during declaration -- it is impossible for a variable to exist without an explicitly-assigned value.
@@ -49,7 +61,6 @@ A variable that has been previously declared can then be assigned to:
 ```
 [variable name] = [expression]
 ```
-All assignment type checking is done during parsing -- it should be impossible to have runtime type errors.
 
 ## `print` statements
 
