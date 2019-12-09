@@ -38,9 +38,8 @@ See `notes/grammar.txt` for a specification of the grammar.
 The source code is first tokenized in `src/lexer.c`.
 The `tokenize(char *str)` function takes the entire source code as a string; it then constructs a linked list of tokens by iteratively splitting the string (i.e. we start with a single node and split that node's text until we're left with a linked list where each node is a token).
 Comments are stripped at this point and "implied" semicolons are inserted where appropriate.
-So far, this portion (the lexer) is all that has been implemented.
 
-Next, a recursive descent parser will consume the linked list produced by the lexer and produce an AST as defined by the grammar specification; the grammar is specified in a way that should:
+Next, a recursive descent parser consumes the linked list produced by the lexer and produces an AST as defined by the grammar specification; the grammar is specified in a way that should:
 - be unambiguous, i.e. there is only one set of rules that could produce a given piece of source code
 - handle operator precedence automatically
 
