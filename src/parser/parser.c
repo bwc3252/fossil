@@ -1,3 +1,10 @@
+// Recursive descent parser for fossil
+//
+// NOTE: Currently, a fossil source file can only consist of a single main
+// function. A significant amount of work will need to be done to implement
+// functions more generally -- this will require careful handling of variable
+// scope, as well as type checking for both return types and parameter types.
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -6,10 +13,14 @@
 #include "parser.h"
 #include "ast.h"
 #include "token_classes.h"
+#include "../context/context.h"
 
 #define DEBUG_PRINT 1
 
+// global variables for keeping track of current token, function parameters
+// and return types, local variables, etc.
 list_node_t curr;
+symbol_table_t symbol_table;
 
 void advance(void) {
     if (curr == NULL) {
@@ -43,6 +54,7 @@ ast_node_t ast_node(void) {
 
 ast_node_t parse(list_node_t node) {
     curr = node;
+    symbol_table = new_symbol_table();
     return prog();
 }
 
@@ -278,9 +290,23 @@ ast_node_t var_assign(void) {
     ast_node_t ret = ast_node();
     var_assign_t assign_node = malloc(sizeof(struct var_assign_s));
     assign_node->var = term();
+    if (((ast_node_t)assign_node->var)->nt != VAR_TERM) {
+        error("", "Invalid assignment");
+    }
     assign_node->assign = EQUALS;
     expect("=");
     assign_node->expr = expr();
+    var_term_t var_node = ((ast_node_t)assign_node->var)->node;
+    char *name = var_node->name;
+    table_entry_t entry = table_get(symbol_table, name);
+    if (entry == NULL) {
+        error(name, "Assignment to undeclared variable");
+    }
+    int var_type = *(int *)entry->value;
+    if (var_type != ((ast_node_t)assign_node->expr)->dt) {
+        error("", "Type error in assignment");
+    }
+    ret->dt = var_type;
     ret->node = assign_node;
     ret->nt = VAR_ASSIGN;
     return ret;
@@ -297,9 +323,20 @@ ast_node_t decl_assign(void) {
     }
     advance();
     assign_node->var = term();
+    char *name = ((var_term_t)((ast_node_t)assign_node->var)->node)->name;
+    if (table_get(symbol_table, name) != NULL) {
+        error(name, "Variable already declared");
+    }
     assign_node->assign = EQUALS;
     expect("=");
     assign_node->expr = expr();
+    ((ast_node_t)assign_node->var)->dt = ret->dt;
+    int *dt = malloc(sizeof(int));
+    *dt = ret->dt;
+    table_add(symbol_table, name, dt);
+    if (ret->dt != ((ast_node_t)assign_node->expr)->dt) {
+        error("", "Type error in assignment");
+    }
     ret->node = assign_node;
     ret->nt = DECL_ASSIGN;
     return ret;
@@ -566,8 +603,10 @@ ast_node_t term(void) {
     term_node->name = calloc(strlen(curr->text) + 1, sizeof(char));
     strcpy(term_node->name, curr->text);
     ret->node = term_node;
-    ret->dt = INT; // FIXME this should NOT be hard-coded, we need to store
-                   // declared variables, with their types, in a table
+    table_entry_t entry = table_get(symbol_table, term_node->name);
+    if (entry != NULL) {
+        ret->dt = *(int *)entry->value;
+    }
     ret->nt = VAR_TERM;
     advance();
     return ret;

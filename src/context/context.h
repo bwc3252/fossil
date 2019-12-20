@@ -10,12 +10,12 @@
 typedef struct table_entry_s {
     char *key;
     void *value;
+    struct table_entry_s *next;
 } *table_entry_t;
 
 typedef struct symbol_table_s {
     size_t size;
     size_t len;
-    //unsigned long (*hashfunc)(char *);
     table_entry_t *table;
 } *symbol_table_t;
 
@@ -24,7 +24,7 @@ typedef struct stack_frame_s {
     struct stack_frame_s *prev;
 } *stack_frame_t;
 
-// construtor and destructor function declarations
+// constructor and destructor function declarations
 stack_frame_t new_stack_frame(stack_frame_t top);
 
 symbol_table_t new_symbol_table(void);
@@ -41,5 +41,11 @@ void destroy_table_entry(table_entry_t entry);
 
 // a useful hash function for strings
 unsigned long hashfunc_str(char *str);
+
+// functions for interacting with the symbol table
+
+void table_add(symbol_table_t table, char *key, void *value);
+
+table_entry_t table_get(symbol_table_t table, char *key);
 
 #endif
