@@ -329,18 +329,21 @@ ast_node_t decl_assign(void) {
         ret->dt = BOOL;
     }
     advance();
-    assign_node->var = term();
-    char *name = ((var_term_t)((ast_node_t)assign_node->var)->node)->name;
+    // FIXME is this a safe assumption to make?
+    char *name = curr->text;
+    //printf("Name in declaration: %s\n", name);
     if (table_get(symbol_table, name) != NULL) {
         error(name, "Variable already declared");
     }
+    int *dt = malloc(sizeof(int));
+    *dt = ret->dt;
+    table_add(symbol_table, name, dt);
+    assign_node->var = term();
+    //char *name = ((var_term_t)((ast_node_t)assign_node->var)->node)->name;
     assign_node->assign = EQUALS;
     expect("=");
     assign_node->expr = expr();
     ((ast_node_t)assign_node->var)->dt = ret->dt;
-    int *dt = malloc(sizeof(int));
-    *dt = ret->dt;
-    table_add(symbol_table, name, dt);
     if (ret->dt != ((ast_node_t)assign_node->expr)->dt) {
         error("", "Type error in assignment");
     }
@@ -364,11 +367,13 @@ ast_node_t or(void) {
     or_t or_node = malloc(sizeof(struct or_s));
     or_node->and = and();
     if (strcmp(curr->text, OP_OR) == 0) {
+        advance();
         or_node->or = or();
         if ((((ast_node_t)or_node->and)->dt != BOOL)
                 || (((ast_node_t)or_node->or)->dt != BOOL)) {
             error("", "Invalid type for 'or'");
         }
+        ret->dt = BOOL;
     }
     else {
         or_node->or = NULL;
@@ -384,11 +389,13 @@ ast_node_t and(void) {
     and_t and_node = malloc(sizeof(struct and_s));
     and_node->eq = eq();
     if (strcmp(curr->text, OP_AND) == 0) {
+        advance();
         and_node->and = and();
         if ((((ast_node_t)and_node->eq)->dt != BOOL)
                 || (((ast_node_t)and_node->and)->dt != BOOL)) {
             error("", "Invalid type for 'and'");
         }
+        ret->dt = BOOL;
     }
     else {
         and_node->and = NULL;
@@ -612,9 +619,10 @@ ast_node_t term(void) {
     strcpy(term_node->name, curr->text);
     ret->node = term_node;
     table_entry_t entry = table_get(symbol_table, term_node->name);
-    if (entry != NULL) {
-        ret->dt = *(int *)entry->value;
+    if (entry == NULL) {
+        error(term_node->name, "Undeclared variable");
     }
+    ret->dt = *(int *)entry->value;
     ret->nt = VAR_TERM;
     advance();
     return ret;

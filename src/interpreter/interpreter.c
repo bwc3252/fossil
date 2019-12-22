@@ -118,7 +118,6 @@ void eval_unary(ast_node_t node) {
         return;
     }
     // it must be a unary operation
-    reset();
     eval_unary(unary_node->unary);
     if (unary_node->op == NEGATE) {
         *(int *)vm->reg *= -1;

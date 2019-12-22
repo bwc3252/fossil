@@ -99,15 +99,17 @@ void table_add(symbol_table_t table, char *key, void *value) {
         return;
     }
     table_entry_t e = table->table[ind];
-    while (e->next != NULL) {
+    table_entry_t prev;
+    while (e != NULL) {
         if (strcmp(e->key, key) == 0) {
             e->value = value;
             return;
         }
+        prev = e;
         e = e->next;
     }
     table_entry_t entry = new_table_entry();
-    e->next = entry;
+    prev->next = entry;
     entry->key = calloc(strlen(key) + 1, sizeof(char));
     strcpy(entry->key, key);
     entry->value = value;
