@@ -52,7 +52,9 @@ void destroy_stack_frame(stack_frame_t frame) {
 
 void destroy_symbol_table(symbol_table_t table) {
     for (int i = 0; i < table->len; ++ i) {
-        destroy_table_entry(table->table[i]);
+        if (table->table[i] != NULL) {
+            destroy_table_entry(table->table[i]);
+        }
     }
     free(table->table);
     free(table);
@@ -64,6 +66,9 @@ void destroy_table_entry(table_entry_t entry) {
     }
     if (entry->value != NULL) {
         free(entry->value);
+    }
+    if (entry->next != NULL) {
+        destroy_table_entry(entry->next);
     }
     free(entry);
 }
@@ -99,6 +104,7 @@ void table_add(symbol_table_t table, char *key, void *value) {
             e->value = value;
             return;
         }
+        e = e->next;
     }
     table_entry_t entry = new_table_entry();
     e->next = entry;
@@ -114,6 +120,7 @@ table_entry_t table_get(symbol_table_t table, char *key) {
         if (strcmp(entry->key, key) == 0) {
             break;
         }
+        entry = entry->next;
     }
     return entry;
 }

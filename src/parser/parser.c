@@ -15,7 +15,7 @@
 #include "token_classes.h"
 #include "../context/context.h"
 
-#define DEBUG_PRINT 1
+#define DEBUG_PRINT 0
 
 // global variables for keeping track of current token, function parameters
 // and return types, local variables, etc.
@@ -55,7 +55,9 @@ ast_node_t ast_node(void) {
 ast_node_t parse(list_node_t node) {
     curr = node;
     symbol_table = new_symbol_table();
-    return prog();
+    ast_node_t ret = prog();
+    destroy_symbol_table(symbol_table);
+    return ret;
 }
 
 ast_node_t prog(void) {
@@ -222,7 +224,12 @@ ast_node_t elifs(void) {
     ast_node_t ret = ast_node();
     elifs_t elifs_node = malloc(sizeof(struct elifs_s));
     elifs_node->elif_stmt = elif_stmt();
-    elifs_node->elifs = elifs();
+    if (strcmp(curr->text, KEYWORD_ELIF) == 0) {
+        elifs_node->elifs = elifs();
+    }
+    else {
+        elifs_node->elifs = 0;
+    }
     ret->node = elifs_node;
     ret->nt = ELIFS;
     return ret;
@@ -393,6 +400,7 @@ ast_node_t and(void) {
 }
 
 ast_node_t eq(void) {
+    // FIXME add type checking
     ast_node_t ret = ast_node();
     eq_t eq_node = malloc(sizeof(struct eq_s));
     eq_node->comp = comp();
@@ -622,6 +630,7 @@ ast_node_t bool_value(void) {
         bool_node->value = 0;
     }
     ret->node = bool_node;
+    ret->dt = BOOL;
     ret->nt = BOOL_VALUE;
     advance();
     return ret;

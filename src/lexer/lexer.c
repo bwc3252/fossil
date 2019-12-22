@@ -67,7 +67,7 @@ list_node_t tokenize(char *str) {
                     || strcmp(text, EMPTY) == 0
                     || (strcmp(text, ";") == 0 && strcmp(node->prev->text, ";") == 0)
                     || (strcmp(text, ";") == 0 && strcmp(node->prev->text, LEFT_PAR) == 0)
-                    || (strcmp(text, ";") == 0 && strcmp(node->prev->text, RIGHT_PAR) == 0)
+                    //|| (strcmp(text, ";") == 0 && strcmp(node->prev->text, RIGHT_PAR) == 0)
                     || (strcmp(text, ";") == 0 && strcmp(node->prev->text, LEFT_BR) == 0)
                     || (strcmp(text, ";") == 0 && strcmp(node->prev->text, RIGHT_BR) == 0)
                     || (strcmp(text, ";") == 0 && strcmp(node->prev->text, LEFT_CURL) == 0)

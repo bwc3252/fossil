@@ -9,6 +9,7 @@
 #include "io/read_file.h"
 #include "parser/parser.h"
 #include "context/context.h"
+#include "interpreter/interpreter.h"
 
 int main(int argc, char **argv) {
     if (argc < 2) {
@@ -18,7 +19,8 @@ int main(int argc, char **argv) {
     char *str = read_source_file(argv[1]);
     list_node_t node = tokenize(str);
     list_node_t start = node;
-    parse(node);
+    ast_node_t root = parse(node);
     destroy_list(start);
     free(str);
+    interpret(root);
 }
