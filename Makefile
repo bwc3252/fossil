@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS += -std=c99 -pedantic -Wall -ggdb
 RM = rm
-SOURCES = src/main.c
+SOURCES = src/main.c src/lexer/lexer.c
 OBJECTS = $(SOURCES:.c=.o)
 TARGET = build/fossil
 
